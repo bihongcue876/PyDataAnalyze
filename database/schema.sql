@@ -1,0 +1,2 @@
+-- PyDataAnalyze 数据库模式
+-- SQLite
