@@ -1,34 +1,59 @@
-# ＰｙＤａｔａＡｎａｌｙｚｅ
+# PyDataAnalyze
 
-交互式数据分析系统，支持文件上传、清洗、可视化、聚类分析与结果导出。  
-基于 FastAPI + React + SQLite 构建，前后端分离，响应式布局。
+交互式数据分析系统，支持文件上传、数据清洗、可视化和聚类分析。
 
----
+## 快速开始
+
+### 后端
+
+```bash
+cd backend
+uv sync
+uv run uvicorn main:app --reload
+```
+
+服务运行在 `http://localhost:8000`，API 文档访问 `http://localhost:8000/docs`
+
+### 前端
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+服务运行在 `http://localhost:5173`
+
+## API 概览
+
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| POST | `/api/upload` | 上传文件并返回预览数据 |
+| POST | `/api/clean` | 数据清洗操作 |
+| POST | `/api/cluster` | K-Means 聚类分析 |
+| POST | `/api/visualize` | 获取图表数据 |
+| POST | `/api/export` | 导出结果为文件 |
+
+
+## 技术栈
+
+- **后端**: FastAPI (Python)
+- **前端**: React + Vite
+- **数据库**: SQLite
+- **数据处理**: Pandas, NumPy, Scikit-learn
 
 ## 功能
 
-（待补充）
+- 上传 CSV / Excel 文件并预览
+- 数据清洗：缺失值填充、异常值剔除、重复值删除
+- 数据可视化：柱状图、折线图、散点图、饼图
+- K-Means 聚类分析
+- 分析结果导出（CSV / Excel）
 
----
-
-## 分工
-
-| 划分 | 任务 |
-|------|----------|
-| **后端开发** | 搭建 FastAPI 服务；设计 RESTful API；集成 SQLite 记录上传和分析历史；与前端联调接口。 |
-| **前端开发** | 使用 React 开发单页面应用；实现上传、预览、清洗、可视化、聚类、导出等交互界面；对接后端 API，渲染可交互图表。 |
-| **数据采集与测试** | 准备多场景测试数据集（CSV/Excel）；编写测试用例；功能验收、截图与录制；输出测试报告。 |
-| **数据处理与算法** | 封装 pandas 数据清洗、异常检测函数；实现 K-Means 聚类；为图表提供标准化数据；供后端调用。 |
-
----
-
-## 底层架构
-
-### 技术栈
-- **后端**: FastAPI (Python)
-- **前端**: React + JSX, Vite
-- **数据库**: SQLite
-- **数据处理**: Pandas, NumPy, Scikit-learn, ...
-- **通信**: RESTful API (JSON), FormData 文件上传
-
-### 架构简图
+## 工程分工
+| 负责人 | 负责部分 |
+|---|---|
+| 一 | 后端，统调，微调 |
+| 二 | 前端，协调 |
+| 三 | 数据获取审核，数据清洗测试，单元测试 |
+| 四 | 数据主要获取，统测，用户测试 |
