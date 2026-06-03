@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# SQLite
+backend/pydata.db
+
+# Uploads & exports
+data/uploads/
+data/exports/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Docs
+docs/
