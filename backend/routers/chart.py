@@ -1,19 +1,19 @@
-"""可视化数据路由"""
+"""图表数据路由 — POST /api/chart"""
 
 import os
 from fastapi import APIRouter, HTTPException
 from config import UPLOAD_DIR
-from models.schemas import VisualizeRequest
+from models.schemas import ChartRequest
 from models.database import save_record
 from services.visualization import prepare_chart_data
 from utils.file_handler import load_dataframe_with_session
 
-router = APIRouter(prefix="/api", tags=["visualize"])
+router = APIRouter(prefix="/api", tags=["chart"])
 
 
-@router.post("/visualize")
-async def visualize_data(req: VisualizeRequest):
-    """获取图表数据"""
+@router.post("/chart")
+async def get_chart_data(req: ChartRequest):
+    """获取图表数据，直接返回 ChartData 对象（无包装键）"""
     session_dir = os.path.join(UPLOAD_DIR, req.session_id)
     if not os.path.exists(session_dir):
         raise HTTPException(status_code=404, detail="session 不存在或已过期")
@@ -23,13 +23,16 @@ async def visualize_data(req: VisualizeRequest):
         raise HTTPException(status_code=404, detail="未找到数据")
 
     try:
-        chart_data = prepare_chart_data(df, req.chart_type, req.x_column, req.y_column)
+        chart_data = prepare_chart_data(
+            df,
+            chart_type=req.chart_type,
+            x_column=req.x_column,
+            y_column=req.y_column,
+            columns=req.columns,
+        )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-    save_record("session", "visualize", f"图表: {req.chart_type}(x={req.x_column}, y={req.y_column})")
+    save_record("session", "chart", f"图表: {req.chart_type}")
 
-    return {
-        "success": True,
-        "data": chart_data,
-    }
+    return chart_data

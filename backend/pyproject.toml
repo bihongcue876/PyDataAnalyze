@@ -2,6 +2,9 @@
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
 # ============================================================
 # Project
 # ============================================================
@@ -10,7 +13,7 @@ build-backend = "hatchling.build"
 name = "pydataanalyze"
 version = "0.1.0"
 description = "交互式数据分析系统后端"
-readme = "README.md"
+readme = "../README.md"
 license = { text = "MIT" }
 requires-python = ">=3.14"
 authors = [{ name = "PyDataAnalyze Team" }]

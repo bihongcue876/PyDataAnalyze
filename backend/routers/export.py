@@ -1,4 +1,4 @@
-"""结果导出路由"""
+"""结果导出路由 — POST /api/export"""
 
 import os
 from fastapi import APIRouter, HTTPException
@@ -27,11 +27,11 @@ async def export_data(req: ExportRequest):
         if req.format == "csv":
             filepath = export_csv(df)
             media_type = "text/csv"
-            filename = "export.csv"
+            filename = "exported_data.csv"
         elif req.format == "excel":
             filepath = export_excel(df)
             media_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            filename = "export.xlsx"
+            filename = "exported_data.xlsx"
         else:
             raise HTTPException(status_code=400, detail=f"不支持的导出格式: {req.format}")
     except Exception as e:
