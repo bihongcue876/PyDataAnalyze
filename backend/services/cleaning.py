@@ -25,31 +25,41 @@ def fill_missing(df: pd.DataFrame, strategy: str = "mean") -> pd.DataFrame:
     return df
 
 
-def remove_outliers(df: pd.DataFrame, column: str, method: str = "iqr") -> pd.DataFrame:
-    """移除异常值"""
+def remove_outliers(
+    df: pd.DataFrame,
+    columns: list[str] | None = None,
+    method: str = "iqr",
+) -> pd.DataFrame:
+    """移除异常值（支持多列联合过滤）"""
     df = df.copy()
 
-    if column not in df.columns:
-        return df
+    if not columns:
+        # 空列表 = 对所有数值列检测
+        columns = df.select_dtypes(include=[np.number]).columns.tolist()
 
-    if method == "iqr":
-        Q1 = df[column].quantile(0.25)
-        Q3 = df[column].quantile(0.75)
-        IQR = Q3 - Q1
-        lower = Q1 - 1.5 * IQR
-        upper = Q3 + 1.5 * IQR
-        return df[(df[column] >= lower) & (df[column] <= upper)]
+    mask = pd.Series(True, index=df.index)
+    for col in columns:
+        if col not in df.columns:
+            continue
 
-    elif method == "zscore":
-        from scipy import stats
-        z_scores = np.abs(stats.zscore(df[column].dropna()))
-        threshold = 3
-        mask = pd.Series(False, index=df.index)
-        valid_idx = df[column].dropna().index[z_scores < threshold]
-        mask[valid_idx] = True
-        return df[mask]
+        if method == "iqr":
+            Q1 = df[col].quantile(0.25)
+            Q3 = df[col].quantile(0.75)
+            IQR = Q3 - Q1
+            lower = Q1 - 1.5 * IQR
+            upper = Q3 + 1.5 * IQR
+            mask &= (df[col] >= lower) & (df[col] <= upper)
 
-    return df
+        elif method == "zscore":
+            from scipy import stats
+            z = np.abs(stats.zscore(df[col].dropna()))
+            threshold = 3
+            valid_idx = df[col].dropna().index[z < threshold]
+            col_mask = pd.Series(False, index=df.index)
+            col_mask[valid_idx] = True
+            mask &= col_mask
+
+    return df[mask].reset_index(drop=True)
 
 
 def drop_duplicates(df: pd.DataFrame) -> pd.DataFrame:

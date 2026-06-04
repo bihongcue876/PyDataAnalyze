@@ -28,6 +28,7 @@ frontend/dist/
 # ============================================================
 .idea/
 .vscode/
+.qwen/
 *.swp
 *.swo
 *~
@@ -66,3 +67,4 @@ htmlcov/
 .ruff_cache/
 .mypy_cache/
 *.log
+docs/
