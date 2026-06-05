@@ -100,19 +100,6 @@ class AnalyzeRequest(BaseModel):
     plot_y: str | None = None
 
 
-class CompareMethodItem(BaseModel):
-    """多算法对比中的单个方法配置"""
-    type: str  # kmeans / dbscan / agglomerative / pca
-    params: AnalyzeParams = AnalyzeParams()
-
-
-class AnalyzeCompareRequest(BaseModel):
-    """POST /api/analyze/compare"""
-    session_id: str
-    columns: list[str]
-    methods: list[CompareMethodItem]
-
-
 class ExportRequest(BaseModel):
     """POST /api/export"""
     session_id: str

@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from models.database import init_db
-from routers import analyze, analyze_compare, chart, clean, export, health, history, session, upload
+from routers import analyze, chart, clean, export, health, history, session, upload
 
 app = FastAPI(title="PyDataAnalyze", version="0.1.0")
 
@@ -29,7 +29,6 @@ app.include_router(export.router)
 app.include_router(health.router)
 app.include_router(history.router)
 app.include_router(session.router)
-app.include_router(analyze_compare.router)
 
 
 # ============================================================
