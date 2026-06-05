@@ -1,10 +1,12 @@
 """图表数据路由 — POST /api/chart"""
 
 import os
+
 from fastapi import APIRouter, HTTPException
+
 from config import UPLOAD_DIR
-from models.schemas import ChartRequest
 from models.database import save_record
+from models.schemas import ChartRequest
 from services.visualization import prepare_chart_data
 from utils.file_handler import load_dataframe_with_session
 
@@ -29,9 +31,10 @@ async def get_chart_data(req: ChartRequest):
             x_column=req.x_column,
             y_column=req.y_column,
             columns=req.columns,
+            color_column=req.color_column,
         )
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
     save_record("session", "chart", f"图表: {req.chart_type}")
 

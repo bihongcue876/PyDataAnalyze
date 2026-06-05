@@ -1,13 +1,13 @@
 """PyDataAnalyze 后端入口 — FastAPI 应用"""
 
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from models.database import init_db
-from routers import upload, clean, analyze, chart, export, health
+from routers import analyze, analyze_compare, chart, clean, export, health, history, session, upload
 
 app = FastAPI(title="PyDataAnalyze", version="0.1.0")
 
@@ -27,6 +27,9 @@ app.include_router(chart.router)
 app.include_router(analyze.router)
 app.include_router(export.router)
 app.include_router(health.router)
+app.include_router(history.router)
+app.include_router(session.router)
+app.include_router(analyze_compare.router)
 
 
 # ============================================================
