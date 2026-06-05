@@ -5,6 +5,7 @@ import DataPreview from '../components/DataPreview';
 import DataCleaning from '../components/DataCleaning';
 import Visualization from '../components/Visualization';
 import Clustering from '../components/Clustering';
+import HistoryPanel from '../components/HistoryPanel';
 import ExportPanel from '../components/ExportPanel';
 
 /**
@@ -50,14 +51,17 @@ function HomePage() {
     cleanOperations,
     chartData,
     clusterResult,
+    historyData,
     isLoading,
     error,
     backendOnline,
     handleUpload,
+    handleLoadSession,
     handleClean,
     handleChart,
     handleCluster,
     handleExport,
+    handleHistory,
     handleHealthCheck,
     resetSession,
     setError,
@@ -132,6 +136,15 @@ function HomePage() {
               <span>后端服务未连接，请确认后端已启动（<code>uvicorn backend.main:app --port 8000</code>）</span>
             </div>
           )}
+
+          {/* ======== 历史记录 ======== */}
+          <HistoryPanel
+            historyData={historyData}
+            onLoadHistory={handleHistory}
+            onLoadSession={handleLoadSession}
+            isLoading={isLoading}
+            setError={setError}
+          />
 
           {/* ======== 步骤 1: 上传 ======== */}
           <FileUpload

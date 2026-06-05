@@ -26,12 +26,12 @@ function FileUpload({ onUploadSuccess, isLoading, setError }) {
   const validateAndSelect = useCallback((file) => {
     setError(null);
 
-    // 仅接受单文件
     if (!file) return;
 
     const ext = file.name.split('.').pop()?.toLowerCase();
-    if (!['csv', 'xlsx', 'xls'].includes(ext)) {
-      setError('不支持的文件格式，请上传 CSV（.csv）或 Excel（.xlsx / .xls）文件');
+    const allowed = ['csv', 'xlsx', 'xls', 'json', 'jsonl', 'parquet', 'feather', 'zip'];
+    if (!allowed.includes(ext)) {
+      setError('不支持的文件格式，请上传 CSV / Excel / JSON / JSONL / Parquet / Feather / ZIP');
       return;
     }
 
@@ -129,7 +129,7 @@ function FileUpload({ onUploadSuccess, isLoading, setError }) {
           >
             <div className="drop-icon">📁</div>
             <p className="drop-text">拖拽文件到此处，或点击浏览</p>
-            <p className="drop-hint">支持 CSV（.csv）、Excel（.xlsx / .xls）格式，最大 10MB</p>
+            <p className="drop-hint">支持 CSV / Excel / JSON / JSONL / Parquet / Feather / ZIP，最大 10MB</p>
           </div>
         ) : (
           /* ---- 文件已选择 ---- */
@@ -176,7 +176,7 @@ function FileUpload({ onUploadSuccess, isLoading, setError }) {
         <input
           ref={fileInputRef}
           type="file"
-          accept=".csv,.xlsx,.xls"
+          accept=".csv,.xlsx,.xls,.json,.jsonl,.parquet,.feather,.zip"
           onChange={handleFileChange}
           style={{ display: 'none' }}
           aria-label="选择数据文件"
