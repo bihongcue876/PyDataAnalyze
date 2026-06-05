@@ -1,10 +1,10 @@
 /**
  * PyDataAnalyze 前后端接口契约 —— TypeScript 类型定义
  *
- * 与 protocol.md v1.1 一致，是前端代码的唯一导入源。
+ * 与 protocol.md v1.2 一致，是前端代码的唯一导入源。
  *
- * @version 1.1
- * @date 2026-06-05
+ * @version 1.2
+ * @date 2026-06-06
  */
 
 // ============================================================
@@ -191,16 +191,6 @@ export interface AnalyzeRequest {
   plot_y?: string;   // 可选，默认 columns[1]
 }
 
-/** POST /api/analyze/compare */
-export interface AnalyzeCompareRequest {
-  session_id: string;
-  columns: string[];
-  methods: Array<{
-    type: AnalysisMethod;
-    params?: AnalyzeRequest["params"];
-  }>;
-}
-
 /** POST /api/export */
 export interface ExportRequest {
   session_id: string;
@@ -258,9 +248,6 @@ export interface AnalyzeResponse {
   summary?: Record<string, ClusterSummaryItem>; // 聚类方法时
   metrics?: AnalysisMetrics;    // 评估指标
 }
-
-/** POST /api/analyze/compare —— 成功响应：单个分析结果数组 */
-export type AnalyzeCompareResponse = AnalyzeResponse[];
 
 /** 上传历史记录项 */
 export interface UploadHistoryItem {
@@ -328,7 +315,6 @@ export const API = {
   CLEAN: "/api/clean",
   CHART: "/api/chart",
   ANALYZE: "/api/analyze",
-  ANALYZE_COMPARE: "/api/analyze/compare",
   EXPORT: "/api/export",
   HEALTH: "/api/health",
   HISTORY: "/api/history",
@@ -342,7 +328,6 @@ export interface ApiMap {
   [API.CLEAN]: { req: CleanRequest; res: CleanResponse };
   [API.CHART]: { req: ChartRequest; res: ChartData };
   [API.ANALYZE]: { req: AnalyzeRequest; res: AnalyzeResponse };
-  [API.ANALYZE_COMPARE]: { req: AnalyzeCompareRequest; res: AnalyzeCompareResponse };
   [API.EXPORT]: { req: ExportRequest; res: Blob };
   [API.HEALTH]: { req: void; res: HealthResponse };
   [API.HISTORY]: { req: void; res: HistoryResponse };

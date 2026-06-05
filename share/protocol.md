@@ -157,43 +157,15 @@
 - `metrics` 包含对应算法的评估指标（聚类：轮廓系数、CH 指数；PCA：解释方差比例）。
 - 对于 `dbscan`，返回的 `chart_data` 中 `cluster` 可能为 -1（噪声）。
 
-### 3.5 多算法对比 —— `POST /api/analyze/compare`
-
-**请求**：
-
-```json
-{
-  "session_id": "a1b2c3d4e5f6",
-  "columns": ["Income", "SpendingScore"],
-  "methods": [
-    { "type": "kmeans", "params": { "n_clusters": 3 } },
-    { "type": "dbscan", "params": { "eps": 0.5, "min_samples": 5 } },
-    { "type": "agglomerative", "params": { "n_clusters": 3 } }
-  ]
-}
-```
-
-**响应**：返回一个数组，每个元素为单个算法的分析结果（结构与 `/api/analyze` 单个响应一致）。
-
-```json
-{
-  "results": [
-    { "method": "kmeans", "chart_data": ..., "metrics": {...}, ... },
-    { "method": "dbscan", "chart_data": ..., "metrics": {...}, ... },
-    ...
-  ]
-}
-```
-
-### 3.6 数据导出 —— `POST /api/export`
+### 3.5 数据导出 —— `POST /api/export`
 
 无变化，同原协议。
 
-### 3.7 健康检查 —— `GET /api/health`
+### 3.6 健康检查 —— `GET /api/health`
 
 无变化。
 
-### 3.8 历史记录列表 —— `GET /api/history`
+### 3.7 历史记录列表 —— `GET /api/history`
 
 **请求**：无参数（支持可选分页 `?limit=20&offset=0`，当前版本返回所有记录）。
 
@@ -226,7 +198,7 @@
 }
 ```
 
-### 3.9 加载历史会话 —— `GET /api/session/{session_id}`
+### 3.8 加载历史会话 —— `GET /api/session/{session_id}`
 
 无变化，返回当前会话数据预览。
 
@@ -288,5 +260,6 @@ type ChartData =
 | 日期 | 版本 | 变更 |
 |------|------|------|
 | 2026-06-04 | 1.0 | 初始版本，统一前后端契约，废止 docs/ 下的旧 SPEC 文档 |
-| 2026-06-05 | 1.1 | 增加文件格式支持（JSON/Parquet/Feather/ZIP）；扩展图表类型（pie/line/heatmap/scatter_matrix）；分析功能增加 PCA/DBSCAN/Agglomerative 及评估指标，新增 `/api/analyze/compare` 端点；历史记录已集成数据库，无需用户系统 |
+| 2026-06-05 | 1.1 | 增加文件格式支持（JSON/Parquet/Feather/ZIP）；扩展图表类型（pie/line/heatmap/scatter_matrix）；分析功能增加 PCA/DBSCAN/Agglomerative 及评估指标；新增 `/api/history` 和 `/api/session/{id}` 端点 |
+| 2026-06-06 | 1.2 | 删除 `/api/analyze/compare` 多算法对比接口（功能冗余） |
 
