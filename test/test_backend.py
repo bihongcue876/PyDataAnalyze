@@ -327,6 +327,43 @@ except ValueError:
     print("[OK] cluster_analyze 少于 2 个数值列 → ValueError")
 
 # ============================================================
+# 附加覆盖: n_clusters 向后兼容（旧格式顶层传递）
+# ============================================================
+
+# 旧格式: 顶层 n_clusters → 应自动映射到 params.n_clusters
+from models.schemas import AnalyzeRequest, AnalyzeParams
+
+old_style = AnalyzeRequest(
+    session_id="test",
+    method="kmeans",
+    columns=["x", "y"],
+    n_clusters=5,
+    plot_x="x",
+    plot_y="y",
+)
+assert old_style.n_clusters == 5
+# params 中的 n_clusters 默认为 None
+assert old_style.params.n_clusters is None
+
+# 验证路由中的合并逻辑
+params_dict = old_style.params.model_dump(exclude_none=True)
+if old_style.n_clusters is not None and "n_clusters" not in params_dict:
+    params_dict["n_clusters"] = old_style.n_clusters
+assert params_dict["n_clusters"] == 5
+print(f"[OK] n_clusters 向后兼容: {params_dict['n_clusters']}")
+
+# 新格式: 通过 params 传递
+new_style = AnalyzeRequest(
+    session_id="test",
+    method="kmeans",
+    columns=["x", "y"],
+    params=AnalyzeParams(n_clusters=4),
+)
+params_dict2 = new_style.params.model_dump(exclude_none=True)
+assert params_dict2["n_clusters"] == 4
+print(f"[OK] n_clusters 新格式: {params_dict2['n_clusters']}")
+
+# ============================================================
 # 附加覆盖: scatter_matrix + color_column
 # ============================================================
 
