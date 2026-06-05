@@ -1,12 +1,19 @@
 """数据清洗路由 — POST /api/clean"""
 
 import os
+
 from fastapi import APIRouter, HTTPException
+
 from config import UPLOAD_DIR
-from models.schemas import CleanRequest
 from models.database import save_record
-from services.cleaning import fill_missing, remove_outliers, drop_duplicates
-from utils.file_handler import load_dataframe_with_session, save_dataframe_to_session, df_to_preview, columns_info
+from models.schemas import CleanRequest
+from services.cleaning import drop_duplicates, fill_missing, remove_outliers
+from utils.file_handler import (
+    columns_info,
+    df_to_preview,
+    load_dataframe_with_session,
+    save_dataframe_to_session,
+)
 
 router = APIRouter(prefix="/api", tags=["clean"])
 

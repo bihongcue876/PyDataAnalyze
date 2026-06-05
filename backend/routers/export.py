@@ -1,11 +1,13 @@
 """结果导出路由 — POST /api/export"""
 
 import os
+
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
+
 from config import UPLOAD_DIR
-from models.schemas import ExportRequest
 from models.database import save_record
+from models.schemas import ExportRequest
 from services.exporter import export_csv, export_excel
 from utils.file_handler import load_dataframe_with_session
 
@@ -35,7 +37,7 @@ async def export_data(req: ExportRequest):
         else:
             raise HTTPException(status_code=400, detail=f"不支持的导出格式: {req.format}")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"导出失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"导出失败: {str(e)}") from e
 
     save_record("session", "export", f"导出为 {req.format}")
 

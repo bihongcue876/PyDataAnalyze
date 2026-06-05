@@ -1,8 +1,9 @@
 """结果导出 — 匹配 share/protocol.md §3.5"""
 
 import os
-import tempfile
+
 import pandas as pd
+
 from config import EXPORT_DIR
 
 

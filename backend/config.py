@@ -13,8 +13,8 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 # SQLite 数据库（相对路径，运行时自动创建）
 DB_PATH = str(BASE_DIR / "backend" / "pydata.db")
 
-# 允许上传的文件扩展名
-ALLOWED_EXTENSIONS = {".csv", ".xlsx", ".xls"}
+# 允许上传的文件扩展名（protocol v1.1）
+ALLOWED_EXTENSIONS = {".csv", ".xlsx", ".xls", ".json", ".jsonl", ".parquet", ".feather", ".zip"}
 
 # 导出目录
 EXPORT_DIR = BASE_DIR / "data" / "exports"
